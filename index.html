@@ -1,1 +1,465 @@
 
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+.app-title{
+  font-size:28px;
+  font-weight:700;
+  text-align:center;
+  letter-spacing:-0.5px;
+  background: linear-gradient(135deg, #e05555 0%, #c9a000 40%, #3a8fd4 80%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.08));
+  line-height: 1.2;
+  padding-bottom: 2px;
+}
+.app-sub{
+  font-size:13px;
+  color:var(--color-text-secondary);
+  text-align:center;
+  margin-top:6px;
+  margin-bottom:1.5rem;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  letter-spacing:0.05em;
+}
+.app-sub span{display:inline-flex;align-items:center;gap:5px;}
+.app-sub span::before{content:'';display:inline-block;width:7px;height:7px;border-radius:50%;}
+.app-sub .dot-r::before{background:#e05555;}
+.app-sub .dot-y::before{background:#c9a000;}
+.app-sub .dot-b::before{background:#3a8fd4;}
+
+.welcome-box{background:var(--color-background-primary);border:1px solid #e0e0e0;border-radius:var(--border-radius-lg);padding:1rem;margin-bottom:0.75rem;box-shadow:0 2px 12px rgba(0,0,0,0.07);}
+.welcome-text{font-size:16px;color:var(--color-text-secondary);line-height:1.9;text-align:justify;}
+.welcome-text strong{color:var(--color-text-primary);font-weight:700;}
+.app{font-family:var(--font-sans);max-width:460px;margin:0 auto;padding:0.8rem 1rem;background:var(--color-background-primary);border-radius:16px;box-shadow:0 4px 24px rgba(0,0,0,0.08);border:1px solid #f0f0f0;}
+.main-tabs{display:none;}
+.screen{display:none;}
+.screen.active{display:block;}
+.step-indicator{display:flex;align-items:center;justify-content:center;gap:0;margin-bottom:1.5rem;}
+.step-dot{width:10px;height:10px;border-radius:50%;background:var(--color-border-tertiary);transition:background 0.3s;}
+.step-dot.active{background:var(--color-text-primary);}
+.step-line{width:40px;height:2px;background:var(--color-border-tertiary);}
+.flow-nav{display:flex;justify-content:flex-end;align-items:center;gap:10px;margin-top:0.5rem;padding:0.5rem;background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);}
+.flow-btn{padding:10px 20px;border-radius:var(--border-radius-md);border:none;font-size:14px;font-weight:600;cursor:pointer;}
+.flow-btn-back{padding:10px 16px;border-radius:var(--border-radius-md);border:none;font-size:14px;font-weight:500;cursor:pointer;}
+.btn-next{background:#2a6dd9;color:#fff;}
+.btn-back{background:#e8e8e8;color:#444;}
+.btn-test{background:#16a34a;color:#fff;}
+.btn-info{background:#7c3aed;color:#fff;}
+.sub-tabs{display:flex;gap:8px;margin-bottom:1.25rem;}
+.stab{flex:1;padding:10px 6px;border:none;border-radius:var(--border-radius-md);font-size:13px;font-weight:500;cursor:pointer;transition:all 0.15s;}
+.stab.physics{background:#fde8e8;color:#9b2222;border:1.5px solid #fde8e8;}
+.stab.physics.active{background:#e05555;color:#fff;border-color:#e05555;}
+.stab.cs{background:#fff4cc;color:#7a5c00;border:1.5px solid #fff4cc;}
+.stab.cs.active{background:#c9a000;color:#fff;border-color:#c9a000;}
+.stab.art{background:#ddeeff;color:#1a4f8a;border:1.5px solid #ddeeff;}
+.stab.art.active{background:#3a8fd4;color:#fff;border-color:#3a8fd4;}
+.panel{display:none;}
+.panel.active{display:block;}
+.card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:0.8rem 1rem;margin-bottom:0.6rem;}
+.color-preview{display:flex;align-items:center;gap:16px;margin-bottom:1.25rem;}
+.color-box{width:72px;height:72px;border-radius:var(--border-radius-md);border:0.5px solid var(--color-border-tertiary);flex-shrink:0;}
+.color-hex{font-size:22px;font-weight:500;color:var(--color-text-primary);font-family:var(--font-mono);}
+.color-name-disp{font-size:15px;color:var(--color-text-primary);margin-top:2px;}
+.color-rgb{font-size:13px;color:var(--color-text-secondary);font-family:var(--font-mono);}
+.slider-group{margin-bottom:0.4rem;}
+.slider-header{display:flex;justify-content:space-between;margin-bottom:2px;}
+.slider-header span{font-size:14px;color:var(--color-text-primary);}
+.slider-header strong{font-size:14px;font-family:var(--font-mono);color:var(--color-text-primary);}
+input[type=range]{width:100%;}
+.quick-label{font-size:11px;font-weight:700;color:var(--color-text-secondary);letter-spacing:0.12em;text-align:center;margin:0.5rem 0 0.4rem;text-transform:uppercase;}
+.quick-btns{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;margin-bottom:1rem;}
+.qbtn{padding:4px 8px;border-radius:var(--border-radius-md);border:none;font-size:11px;font-weight:500;cursor:pointer;}
+.quick-hint{font-size:11px;color:var(--color-text-secondary);background:var(--color-background-secondary);border:1px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:0.4rem;margin-bottom:0.6rem;line-height:1.4;text-align:justify;}
+.quick-hint strong{color:var(--color-text-primary);}
+.synthesis-box{background:#0d0d1a;border-radius:var(--border-radius-md);padding:0.5rem;margin-bottom:0.75rem;}
+.syn-title{font-size:11px;font-weight:700;color:#888;letter-spacing:0.12em;text-align:center;margin-bottom:0.4rem;text-transform:uppercase;}
+.circles-wrap{display:flex;justify-content:center;align-items:center;height:110px;position:relative;}
+.circle{width:58px;height:58px;border-radius:50%;position:absolute;mix-blend-mode:screen;opacity:1;}
+.reset-btn{width:100%;padding:6px;background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);font-size:12px;color:var(--color-text-primary);cursor:pointer;}
+.info-card{border-radius:var(--border-radius-lg);padding:1.25rem;margin-bottom:1rem;}
+.info-card.physics{background:#fff8f8;border:1.5px solid #e05555;}
+.info-card.cs{background:#fffdf0;border:1.5px solid #c9a000;}
+.info-card.art{background:#f0f8ff;border:1.5px solid #3a8fd4;}
+.info-title{
+  font-size:17px;
+  font-weight:700;
+  margin-bottom:0.75rem;
+  letter-spacing:-0.2px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+.info-title::before{
+  content:'';
+  display:inline-block;
+  width:4px;
+  height:20px;
+  border-radius:2px;
+  flex-shrink:0;
+}
+.info-title.physics{color:#a01818;}
+.info-title.physics::before{background:#e05555;}
+.info-title.cs{color:#7a5c00;}
+.info-title.cs::before{background:#c9a000;}
+.info-title.art{color:#0d4a8a;}
+.info-title.art::before{background:#3a8fd4;}
+.info-body{font-size:15px;color:var(--color-text-secondary);line-height:1.8;}
+.info-body strong{color:var(--color-text-primary);font-weight:700;}
+.info-box{border-radius:var(--border-radius-md);padding:0.85rem 1rem;margin:0.75rem 0;}
+.info-box.physics{background:#fde8e8;}
+.info-box.cs{background:#fff9e0;}
+.info-box.art{background:#ddeeff;}
+.info-box li{font-size:15px;color:var(--color-text-secondary);line-height:1.9;list-style:none;}
+.code-block{background:#1a1020;border-radius:var(--border-radius-md);padding:1rem;margin:0.75rem 0;font-family:var(--font-mono);font-size:13px;line-height:1.9;}
+.cr{color:#ff6b6b;}.cg{color:#6bcb77;}.cb{color:#5599ff;}.cy{color:#ffd93d;}
+.quiz-section-badge{display:inline-block;font-size:12px;font-weight:700;letter-spacing:0.05em;padding:3px 10px;border-radius:20px;margin-bottom:0.6rem;}
+.badge-physics{background:#fde8e8;color:#a01818;}
+.badge-cs{background:#fff9e0;color:#7a5c00;}
+.badge-art{background:#ddeeff;color:#0d4a8a;}
+.quiz-prog-bar{height:5px;background:var(--color-background-secondary);border-radius:3px;margin-bottom:1rem;overflow:hidden;}
+.quiz-prog-fill{height:100%;border-radius:3px;transition:width 0.3s;}
+.quiz-prog-fill.physics{background:#e05555;}
+.quiz-prog-fill.cs{background:#c9a000;}
+.quiz-prog-fill.art{background:#3a8fd4;}
+.quiz-meta{display:flex;justify-content:space-between;font-size:13px;color:var(--color-text-secondary);margin-bottom:0.75rem;font-weight:600;}
+.quiz-meta.quiz-meta-physics{color:#a01818;}
+.quiz-meta.quiz-meta-cs{color:#7a5c00;}
+.quiz-meta.quiz-meta-art{color:#0d4a8a;}
+.qopt.qopt-physics:hover:not(:disabled){border-color:#e05555;background:#fff8f8;}
+.qopt.qopt-cs:hover:not(:disabled){border-color:#c9a000;background:#fffdf0;}
+.qopt.qopt-art:hover:not(:disabled){border-color:#3a8fd4;background:#f0f8ff;}
+.screen{display:none;opacity:0;transition:opacity 0.3s ease;}
+.screen.active{display:block;animation:fadeIn 0.3s ease forwards;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+.quiz-fb{font-size:14px;padding:10px 14px;border-radius:var(--border-radius-md);margin-bottom:0.75rem;display:none;line-height:1.7;opacity:0;transition:opacity 0.3s ease;}
+.quiz-fb.show{display:block;animation:fadeIn 0.3s ease forwards;}
+.quiz-q{font-size:16px;font-weight:600;color:var(--color-text-primary);margin-bottom:1rem;line-height:1.6;}
+.quiz-opts{display:flex;flex-direction:column;gap:8px;margin-bottom:1rem;}
+.qopt{padding:11px 14px;border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);background:var(--color-background-primary);font-size:15px;color:var(--color-text-primary);cursor:pointer;text-align:left;transition:all 0.15s;}
+.qopt:hover:not(:disabled){border-color:var(--color-border-secondary);background:var(--color-background-secondary);}
+.qopt.correct{background:#e8f9ee;border-color:#45c97a;color:#1a6e3a;}
+.qopt.wrong{background:#fde8e8;border-color:#e05555;color:#8b1a1a;}
+.quiz-fb{font-size:14px;padding:10px 14px;border-radius:var(--border-radius-md);margin-bottom:0.75rem;display:none;line-height:1.7;}
+.quiz-fb.show{display:block;}
+.quiz-fb.ok{background:#e8f9ee;color:#1a6e3a;}
+.quiz-fb.no{background:#fde8e8;color:#8b1a1a;}
+.quiz-nav{display:flex;justify-content:flex-end;}
+.next-btn{padding:8px 18px;border-radius:var(--border-radius-md);border:none;font-size:14px;font-weight:500;cursor:pointer;color:#fff;display:none;}
+.next-btn.show{display:inline-block;}
+.next-btn.physics{background:#e05555;}
+.next-btn.cs{background:#c9a000;}
+.next-btn.art{background:#3a8fd4;}
+.quiz-intro{border-radius:var(--border-radius-md);padding:1.1rem 1.1rem 0.75rem;}
+.quiz-intro-physics{background:#fff8f8;border:1.5px solid #e05555;}
+.quiz-intro-cs{background:#fffdf0;border:1.5px solid #c9a000;}
+.quiz-intro-art{background:#f0f8ff;border:1.5px solid #3a8fd4;}
+.quiz-intro-text{font-size:14px;color:var(--color-text-secondary);line-height:1.7;}
+.quiz-intro-text strong{color:var(--color-text-primary);font-weight:600;}
+
+.done-score{font-size:36px;font-weight:500;color:var(--color-text-primary);}
+.done-msg{font-size:14px;color:var(--color-text-secondary);margin-top:8px;}
+.restart-btn{margin-top:1rem;padding:9px 22px;border-radius:var(--border-radius-md);border:none;font-size:14px;font-weight:500;cursor:pointer;color:#fff;}
+.restart-btn.physics{background:#e05555;}
+.restart-btn.cs{background:#c9a000;}
+.restart-btn.art{background:#3a8fd4;}
+</style>
+
+<div class="app">
+  <div class="app-title">Εργαστήριο Σύνθεσης Χρωμάτων</div>
+  <div class="app-sub">
+    <span class="dot-r">Φυσική</span>
+    <span class="dot-y">Πληροφορική</span>
+    <span class="dot-b">Καλλιτεχνικά</span>
+  </div>
+
+  <!-- Step indicator -->
+  <div class="step-indicator">
+    <div class="step-dot active" id="dot0"></div>
+    <div class="step-line"></div>
+    <div class="step-dot" id="dot1"></div>
+    <div class="step-line"></div>
+    <div class="step-dot" id="dot2"></div>
+    <div class="step-line"></div>
+    <div class="step-dot" id="dot3"></div>
+  </div>
+
+  <!-- Οθόνη 0: Καλωσόρισμα -->
+  <div id="screen-welcome" class="screen active">
+    <div class="welcome-box">
+      <div class="welcome-text">
+        Μελέτησε διαδοχικά τις πληροφορίες στις καρτέλες <strong>Φυσική</strong>, <strong>Πληροφορική</strong> και <strong>Καλλιτεχνικά</strong> για να ανακαλύψεις τα μυστικά του φωτός και των χρωμάτων. Μόλις ολοκληρώσεις τη μελέτη, θα είσαι έτοιμος για το <strong>Εργαστήριο</strong> και το <strong>Κουίζ</strong>!
+      </div>
+    </div>
+    <div class="flow-nav">
+      <button class="flow-btn btn-next" onclick="goScreen(1)">Επόμενο →</button>
+    </div>
+  </div>
+
+  <!-- Οθόνη 1: Πληροφορίες -->
+  <div id="screen-info" class="screen">
+    <div class="sub-tabs" id="infoSubTabs">
+      <button class="stab physics active" onclick="showInfo('physics')">Φυσική</button>
+      <button class="stab cs" onclick="showInfo('cs')">Πληροφορική</button>
+      <button class="stab art" onclick="showInfo('art')">Καλλιτεχνικά</button>
+    </div>
+    <div id="infoArea"></div>
+    <div class="flow-nav">
+      <button class="flow-btn-back btn-back" onclick="goScreen(0)">← Πίσω</button>
+      <button class="flow-btn btn-next" onclick="goScreen(2)">Επόμενο →</button>
+    </div>
+  </div>
+
+  <!-- Οθόνη 2: Εργαστήριο -->
+  <div id="screen-lab" class="screen">
+    <div class="card">
+      <div class="color-preview">
+        <div class="color-box" id="colorBox"></div>
+        <div>
+          <div class="color-hex" id="hexVal">#000000</div>
+          <div class="color-name-disp" id="colorNameDisp">Μαύρο</div>
+          <div class="color-rgb" id="rgbVal">rgb(0, 0, 0)</div>
+        </div>
+      </div>
+      <div class="slider-group">
+        <div class="slider-header"><span>Κόκκινο (R)</span><strong id="rv">0</strong></div>
+        <input type="range" min="0" max="255" value="0" step="1" id="sr" oninput="upd()">
+      </div>
+      <div class="slider-group">
+        <div class="slider-header"><span>Πράσινο (G)</span><strong id="gv">0</strong></div>
+        <input type="range" min="0" max="255" value="0" step="1" id="sg" oninput="upd()">
+      </div>
+      <div class="slider-group">
+        <div class="slider-header"><span>Μπλε (B)</span><strong id="bv">0</strong></div>
+        <input type="range" min="0" max="255" value="0" step="1" id="sb" oninput="upd()">
+      </div>
+    </div>
+    <div class="quick-label">ΓΡΗΓΟΡΗ ΕΠΙΛΟΓΗ</div>
+    <div class="quick-btns">
+      <button class="qbtn" style="background:#ff0000;color:#fff" onclick="setRGB(255,0,0)">Κόκκινο</button>
+      <button class="qbtn" style="background:#00ff00;color:#fff" onclick="setRGB(0,255,0)">Πράσινο</button>
+      <button class="qbtn" style="background:#0000ff;color:#fff" onclick="setRGB(0,0,255)">Μπλε</button>
+      <button class="qbtn" style="background:#ffff00;color:#333" onclick="setRGB(255,255,0)">Κίτρινο</button>
+      <button class="qbtn" style="background:#00ffff;color:#333" onclick="setRGB(0,255,255)">Κυανό</button>
+      <button class="qbtn" style="background:#ff00ff;color:#fff" onclick="setRGB(255,0,255)">Ματζέντα</button>
+      <button class="qbtn" style="background:#fff;color:#333;border:0.5px solid #ccc" onclick="setRGB(255,255,255)">Λευκό</button>
+      <button class="qbtn" style="background:#111;color:#fff" onclick="setRGB(0,0,0)">Μαύρο</button>
+    </div>
+    <div class="quick-hint">💡 <strong>Δες τους συνδυασμούς! ⚡</strong> Πάτησε ένα χρώμα για να δεις πώς ρυθμίζονται αυτόματα τα sliders και ποιος είναι ο Hex κωδικός του.</div>
+    <div class="synthesis-box">
+      <div class="syn-title">ΣΥΝΘΕΣΗ ΦΩΤΟΣ</div>
+      <div class="circles-wrap">
+        <div class="circle" id="cR" style="transform:translate(-22px,-16px);background:#ff0000;"></div>
+        <div class="circle" id="cG" style="transform:translate(22px,-16px);background:#00ff00;"></div>
+        <div class="circle" id="cB" style="transform:translate(0px,18px);background:#0000ff;"></div>
+      </div>
+    </div>
+    <button class="reset-btn" onclick="setRGB(0,0,0)">Επαναφορά (0, 0, 0)</button>
+    <div class="flow-nav">
+      <button class="flow-btn-back btn-back" onclick="goScreen(1)">← Πίσω</button>
+      <button class="flow-btn btn-test" onclick="goScreen(3)">Ώρα για τεστ 🎯</button>
+    </div>
+  </div>
+
+  <!-- Οθόνη 3: Κουίζ -->
+  <div id="screen-quiz" class="screen">
+    <div class="card" id="quizArea"></div>
+    <div class="flow-nav">
+      <button class="flow-btn-back btn-info" onclick="goScreen(1)">← Πίσω στις Πληροφορίες</button>
+    </div>
+  </div>
+</div>
+
+<script>
+function toHex(r,g,b){return'#'+[r,g,b].map(v=>Math.round(v).toString(16).padStart(2,'0')).join('');}
+function colorName(r,g,b){
+  if(r<12&&g<12&&b<12)return'Μαύρο';
+  if(r>243&&g>243&&b>243)return'Λευκό';
+  const mx=Math.max(r,g,b),mn=Math.min(r,g,b);
+  if(mx-mn<30)return'Γκρι';
+  if(r>=mx&&g>=mx*0.85&&b<mx*0.4)return'Κίτρινο';
+  if(r>=mx&&g>=mx*0.6&&b<mx*0.4)return'Πορτοκαλί';
+  if(r>=mx&&b>=mx*0.7&&g<mx*0.4)return'Ματζέντα';
+  if(r>=mx)return'Κόκκινο';
+  if(g>=mx&&b>=mx*0.7&&r<mx*0.4)return'Κυανό';
+  if(g>=mx)return'Πράσινο';
+  if(b>=mx&&r>=mx*0.55)return'Μοβ';
+  if(b>=mx)return'Μπλε';
+  return'Μικτό χρώμα';
+}
+function upd(){
+  const r=+document.getElementById('sr').value,g=+document.getElementById('sg').value,b=+document.getElementById('sb').value;
+  document.getElementById('rv').textContent=r;
+  document.getElementById('gv').textContent=g;
+  document.getElementById('bv').textContent=b;
+  const hex=toHex(r,g,b);
+  document.getElementById('colorBox').style.background=hex;
+  document.getElementById('hexVal').textContent=hex.toUpperCase();
+  document.getElementById('rgbVal').textContent='rgb('+r+', '+g+', '+b+')';
+  document.getElementById('colorNameDisp').textContent=colorName(r,g,b);
+  document.getElementById('cR').style.background='rgb('+r+',0,0)';
+  document.getElementById('cG').style.background='rgb(0,'+g+',0)';
+  document.getElementById('cB').style.background='rgb(0,0,'+b+')';
+}
+function setRGB(r,g,b){
+  document.getElementById('sr').value=r;
+  document.getElementById('sg').value=g;
+  document.getElementById('sb').value=b;
+  upd();
+}
+upd();
+
+function goScreen(n){
+  document.querySelectorAll('.screen').forEach((el,i)=>el.classList.toggle('active',i===n));
+  document.querySelectorAll('.step-dot').forEach((el,i)=>el.classList.toggle('active',i===n));
+  if(n===3){initQuiz();}
+}
+
+const infoHTML={
+  physics:`<div class="info-card physics">
+    <div class="info-title physics">Φυσική: Σύνθεση Φωτός</div>
+    <div class="info-body">
+      <strong>Ανάλυση:</strong> Το λευκό φως περιέχει <strong>όλα τα χρώματα</strong>. Το πρίσμα το διασπά στα <strong>7 χρώματα</strong> του ουράνιου τόξου.<br><br>
+      <strong>Βιολογία:</strong> Το μάτι έχει <strong>κώνους</strong> για 3 χρώματα: <span class="cr"><strong>Κόκκινο</strong></span>, <span class="cg"><strong>Πράσινο</strong></span>, <span class="cb"><strong>Μπλε</strong></span>. Ο εγκέφαλος συνδυάζει τα σήματα σε <strong>εκατομμύρια αποχρώσεις</strong>.<br><br>
+      <strong>Προσθετική Σύνθεση:</strong> Σε αντίθεση με τη ζωγραφική, εδώ αναμειγνύουμε φως (οθόνες, κινητά). Όσο περισσότερο φως προσθέτεις, τόσο πιο κοντά φτάνεις στο <strong>Λευκό</strong>.
+      <div class="info-box physics">
+        <div style="font-size:13px;font-weight:500;color:#8b1a1a;margin-bottom:6px;">Μήκη κύματος:</div>
+        <li><span class="cr">🔴</span> Κόκκινο: ~700 nm &nbsp;|&nbsp; <span class="cg">🟢</span> Πράσινο: ~550 nm &nbsp;|&nbsp; <span class="cb">🔵</span> Μπλε: ~450 nm</li>
+      </div>
+    </div>
+  </div>`,
+  cs:`<div class="info-card cs">
+    <div class="info-title cs">Πληροφορική: Το μοντέλο RGB</div>
+    <div class="info-body">
+      Κάθε pixel αποτελείται από 3 LED (<span class="cr"><strong>Κόκκινο</strong></span>, <span class="cg"><strong>Πράσινο</strong></span>, <span class="cb"><strong>Μπλε</strong></span>).<br><br>
+      Κάθε LED έχει <strong>256 επίπεδα έντασης</strong> (<strong>0</strong>: σβηστό έως <strong>255</strong>: 100%).<br>
+      Σύνολο: 256×256×256 = <strong>16.777.216 χρώματα</strong> (24-bit True Color).
+      <div class="code-block">
+        <span class="cr">r = 255 → Κόκκινο</span><br>
+        <span class="cg">g = 255 → Πράσινο</span><br>
+        <span class="cb">b = 0 &nbsp;→ Μπλε: 0</span><br>
+        <span class="cy">αποτέλεσμα → Κίτρινο!</span>
+      </div>
+      Ο κωδικός <strong>#FFFF00</strong> είναι ο ίδιος αριθμός σε δεκαεξαδικό σύστημα.
+    </div>
+  </div>`,
+  art:`<div class="info-card art">
+    <div class="info-title art">Καλλιτεχνικά: Χρώμα και Υλικό</div>
+    <div class="info-body">
+      <strong>Βασικά Χρώματα:</strong> Στη ζωγραφική χρησιμοποιούμε το <strong>Κόκκινο</strong>, το <strong>Κίτρινο</strong> και το <strong>Μπλε</strong>.
+      <div class="info-box art">
+        <div style="font-size:13px;font-weight:700;color:#0d3a6e;margin-bottom:6px;">Αναμίξεις:</div>
+        <li>🔴 + 🟡 Κόκκινο + Κίτρινο = <strong>Πορτοκαλί</strong></li>
+        <li>🟡 + 🔵 Κίτρινο + Μπλε = <strong>Πράσινο</strong></li>
+        <li>🔴 + 🔵 Κόκκινο + Μπλε = <strong>Μοβ</strong></li>
+        <li>🔴 + 🟡 + 🔵 Και τα τρία μαζί = <strong>Σκούρο Καφέ / Μαύρο</strong></li>
+      </div>
+      <strong>Αφαιρετική Σύνθεση:</strong> Σε αντίθεση με το φως, οι μπογιές λειτουργούν "αφαιρετικά". Κάθε χρώμα που προσθέτεις απορροφά (αφαιρεί) φως, γι' αυτό το αποτέλεσμα γίνεται πιο σκούρο.<br><br>
+      <strong>Εκτύπωση (CMYK):</strong> Στους εκτυπωτές χρησιμοποιούμε μια παραλλαγή αυτών των χρωμάτων: <strong>Κυανό (Cyan)</strong>, <strong>Ματζέντα (Magenta)</strong> και <strong>Κίτρινο (Yellow)</strong>.
+      <div class="info-box art">
+        <div style="font-size:13px;font-weight:700;color:#0d3a6e;margin-bottom:6px;">Φως vs Μπογιά (Η μεγάλη διαφορά):</div>
+        <li>💡 <strong>Φως (Οθόνες):</strong> Προσθέτεις χρώματα → Καταλήγεις στο <strong>Λευκό</strong>.</li>
+        <li>🖌️ <strong>Μπογιά (Χαρτί):</strong> Προσθέτεις χρώματα → Καταλήγεις στο <strong>Μαύρο</strong>.</li>
+      </div>
+    </div>
+  </div>`
+};
+
+let curInfo='physics';
+function showInfo(s){
+  curInfo=s;
+  document.querySelectorAll('#infoSubTabs .stab').forEach(el=>{el.classList.remove('active');if(el.classList.contains(s))el.classList.add('active');});
+  document.getElementById('infoArea').innerHTML=infoHTML[s];
+}
+showInfo('physics');
+
+const allQuestions=[
+  {q:'Τι συμβαίνει όταν ανακατέψεις κόκκινο και πράσινο φως;',opts:['Γίνεται μπλε','Γίνεται κίτρινο','Γίνεται μαύρο','Γίνεται ροζ'],ans:1,fb:'Σωστά! Κόκκινο + Πράσινο φως = Κίτρινο. Αυτό είναι προσθετική σύνθεση — πολύ διαφορετικό από τη μπογιά!'},
+  {q:'Ποιο χρώμα φωτός έχει το μικρότερο μήκος κύματος;',opts:['Κόκκινο','Πράσινο','Μπλε','Κίτρινο'],ans:2,fb:'Σωστά! Το μπλε φως έχει μήκος κύματος ~450 nm, ενώ το κόκκινο ~700 nm. Μικρότερο μήκος κύματος = μεγαλύτερη ενέργεια.'},
+  {q:'Τι παράγεται όταν συνδυαστούν κόκκινο, πράσινο και μπλε φως στη μέγιστη ένταση;',opts:['Μαύρο','Γκρι','Λευκό','Κυανό'],ans:2,fb:'Σωστά! Όταν και τα τρία βασικά χρώματα φωτός συνδυαστούν στο μέγιστο, παράγεται λευκό φως — ακριβώς όπως το φυσικό ηλιακό φως.'},
+  {q:'Ποιο όργανο του ματιού ανιχνεύει τα χρώματα;',opts:['Ράβδοι','Κώνοι','Αμφιβληστροειδής','Κερατοειδής'],ans:1,fb:'Σωστά! Οι κώνοι βρίσκονται στον αμφιβληστροειδή και ανιχνεύουν κόκκινο, πράσινο και μπλε φως. Οι ράβδοι βλέπουν μόνο φωτεινότητα.'},
+  {q:'Το πρίσμα διασπά το λευκό φως σε:',opts:['3 χρώματα','5 χρώματα','7 χρώματα','10 χρώματα'],ans:2,fb:'Σωστά! Το λευκό φως διασπάται στα 7 χρώματα του ουράνιου τόξου: κόκκινο, πορτοκαλί, κίτρινο, πράσινο, μπλε, ινδικό, βιολετί.'},
+  {q:'Τι χρώμα βλέπεις όταν δεν εκπέμπεται καθόλου φως;',opts:['Μαύρο','Λευκό','Γκρι','Κίτρινο'],ans:0,fb:'Σωστά! Το μαύρο δεν είναι χρώμα φωτός — είναι η απουσία φωτός. Όταν κανένα LED δεν ανάβει, η οθόνη φαίνεται μαύρη.'},
+  {q:'Πόσες τιμές μπορεί να πάρει κάθε κανάλι RGB;',opts:['0–100','0–255','0–360','0–1000'],ans:1,fb:'Σωστά! Κάθε κανάλι (R, G, B) παίρνει τιμές 0–255, δηλαδή 256 επίπεδα — αυτό είναι ένα byte (8 bit) δεδομένων.'},
+  {q:'Τι χρώμα δίνει ο κώδικας #FF0000;',opts:['Πράσινο','Μπλε','Κόκκινο','Λευκό'],ans:2,fb:'Σωστά! Το FF σε δεκαεξαδικό = 255. Άρα #FF0000 = R:255, G:0, B:0 = καθαρό κόκκινο.'},
+  {q:'Πόσα συνολικά χρώματα μπορεί να παράγει το μοντέλο RGB;',opts:['65.536','1.000.000','16.777.216','255.000'],ans:2,fb:'Σωστά! 256 × 256 × 256 = 16.777.216 χρώματα. Αυτό ονομάζεται 24-bit True Color.'},
+  {q:'Τι χρώμα δίνει RGB(255, 255, 0);',opts:['Λευκό','Κυανό','Ματζέντα','Κίτρινο'],ans:3,fb:'Σωστά! Κόκκινο + Πράσινο στο μέγιστο, χωρίς μπλε = Κίτρινο. Θυμήσου: στο φως, R+G=Κίτρινο!'},
+  {q:'Σε ποιο σύστημα αρίθμησης είναι γραμμένοι οι κωδικοί #RRGGBB;',opts:['Δεκαδικό','Δυαδικό','Δεκαεξαδικό','Οκταδικό'],ans:2,fb:'Σωστά! Το δεκαεξαδικό (hex) χρησιμοποιεί ψηφία 0–9 και γράμματα A–F. Π.χ. FF = 255 σε δεκαδικό.'},
+  {q:'Πώς ονομάζεται η μέθοδος σύνθεσης χρωμάτων που χρησιμοποιούν οι οθόνες;',opts:['Αφαιρετική σύνθεση','Προσθετική σύνθεση','Μεικτή σύνθεση','Ψηφιακή σύνθεση'],ans:1,fb:'Σωστά! Οι οθόνες χρησιμοποιούν προσθετική σύνθεση — αναμειγνύουν φως. Όσο περισσότερο φως προσθέτεις, τόσο πιο φωτεινό γίνεται το αποτέλεσμα, φτάνοντας στο Λευκό.'},
+  {q:'Ποια είναι τα 3 βασικά χρώματα στη ζωγραφική;',opts:['Κόκκινο, Πράσινο, Μπλε','Κόκκινο, Κίτρινο, Μπλε','Κυανό, Ματζέντα, Κίτρινο','Πορτοκαλί, Πράσινο, Μοβ'],ans:1,fb:'Σωστά! Στη ζωγραφική τα βασικά είναι Κόκκινο, Κίτρινο, Μπλε. Διαφέρουν από τα βασικά χρώματα του φωτός (R, G, B)!'},
+  {q:'Κόκκινο + Κίτρινο μπογιά =',opts:['Πράσινο','Μοβ','Πορτοκαλί','Καφέ'],ans:2,fb:'Σωστά! Κόκκινο + Κίτρινο μπογιά = Πορτοκαλί. Αυτό είναι αφαιρετική σύνθεση — διαφορετική από τη σύνθεση φωτός.'},
+  {q:'Τι παράγει η ανάμειξη όλων των μπογιών;',opts:['Λευκό','Γκρι','Κίτρινο','Σκούρο/Μαύρο'],ans:3,fb:'Σωστά! Στη μπογιά, όσο περισσότερα χρώματα αναμειγνύεις, τόσο σκουραίνει. Αυτό είναι το αντίθετο από το φως!'},
+  {q:'Κίτρινο + Μπλε μπογιά =',opts:['Πορτοκαλί','Πράσινο','Μοβ','Καφέ'],ans:1,fb:'Σωστά! Κίτρινο + Μπλε μπογιά = Πράσινο. Αυτό ισχύει στη ζωγραφική — όχι στο φως, όπου Y+B δίνει κάτι άλλο.'},
+  {q:'Φως vs Μπογιά: όταν αναμειχθούν όλα τα χρώματα;',opts:['Και τα δύο → Λευκό','Και τα δύο → Μαύρο','Φως→Λευκό, Μπογιά→Μαύρο','Φως→Μαύρο, Μπογιά→Λευκό'],ans:2,fb:'Σωστά! Φως = προσθετική σύνθεση → Λευκό. Μπογιά = αφαιρετική σύνθεση → Μαύρο. Αυτή είναι η βασική διαφορά!'},
+  {q:'Ποια χρώματα χρησιμοποιεί ο εκτυπωτής (CMYK);',opts:['Κόκκινο, Πράσινο, Μπλε','Κόκκινο, Κίτρινο, Μπλε','Κυανό, Ματζέντα, Κίτρινο','Πορτοκαλί, Μοβ, Πράσινο'],ans:2,fb:'Σωστά! Οι εκτυπωτές χρησιμοποιούν Κυανό (Cyan), Ματζέντα (Magenta) και Κίτρινο (Yellow) — συν το Μαύρο (Key) για το CMYK.'},
+  {q:'Πώς λέγεται η σύνθεση χρωμάτων στη ζωγραφική, όπου κάθε χρώμα που προσθέτεις απορροφά φως;',opts:['Προσθετική σύνθεση','Αφαιρετική σύνθεση','Ψηφιακή σύνθεση','Φωτεινή σύνθεση'],ans:1,fb:'Σωστά! Στη ζωγραφική χρησιμοποιούμε αφαιρετική σύνθεση — κάθε μπογιά απορροφά (αφαιρεί) φως, γι\' αυτό το αποτέλεσμα γίνεται πιο σκούρο όσο προσθέτεις χρώματα.'},
+];
+
+let qIdx=0,score=0,answered=false,introShown=false;
+
+function initQuiz(){
+  qIdx=0;score=0;answered=false;
+  const area=document.getElementById('quizArea');
+  if(!area)return;
+  area.innerHTML=`
+    <div class="welcome-box" style="margin-bottom:1rem;">
+      <div class="welcome-text">🎯 Ένα ολοκληρωμένο τεστ <strong>${allQuestions.length} ερωτήσεων</strong> για να δεις πόσο καλά έμαθες τα μυστικά του φωτός!</div>
+    </div>
+    <div class="quiz-nav" style="justify-content:flex-end;">
+      <button class="flow-btn" onclick="renderQ()">Ξεκινάμε →</button>
+    </div>`;
+}
+
+function getSection(idx){
+  if(idx<6) return 'physics';
+  if(idx<12) return 'cs';
+  return 'art';
+}
+
+function renderQ(){
+  if(qIdx>=allQuestions.length){
+    const pct=Math.round(score/allQuestions.length*100);
+    document.getElementById('quizArea').innerHTML=`<div class="done-box">
+      <div class="done-score">${score} / ${allQuestions.length}</div>
+      <div class="done-msg">${pct===100?'🏆 Τέλεια! Τα ξέρεις όλα!':pct>=70?'🌟 Πολύ καλά! Συνέχισε έτσι!':pct>=40?'👍 Καλή προσπάθεια! Μελέτησε λίγο ακόμα!':'📚 Ξαναδιάβασε τις πληροφορίες και προσπάθησε ξανά!'}</div>
+      <button class="restart-btn physics" onclick="initQuiz()">Ξανά από την αρχή</button>
+    </div>`;return;
+  }
+  const q=allQuestions[qIdx];answered=false;
+  const sec=getSection(qIdx);
+  const pct=Math.round(qIdx/allQuestions.length*100);
+  const sectionLabel={'physics':'🔴 Φυσική','cs':'🟡 Πληροφορική','art':'🔵 Καλλιτεχνικά'};
+  document.getElementById('quizArea').innerHTML=`
+    <div class="quiz-prog-bar"><div class="quiz-prog-fill ${sec}" style="width:${pct}%"></div></div>
+    <div class="quiz-meta quiz-meta-${sec}"><span>Ερώτηση ${qIdx+1} από ${allQuestions.length}</span><span>Σκορ: ${score}</span></div>
+    <div class="quiz-q">${q.q}</div>
+    <div class="quiz-opts">${q.opts.map((o,i)=>`<button class="qopt qopt-${sec}" onclick="answer(${i})">${o}</button>`).join('')}</div>
+    <div class="quiz-fb" id="qfb"></div>
+    <div class="quiz-nav"><button class="next-btn ${sec}" id="nxtBtn" onclick="nextQ()">Επόμενο →</button></div>`;
+}
+function answer(i){
+  if(answered)return;answered=true;
+  const q=allQuestions[qIdx];
+  const sec=getSection(qIdx);
+  document.querySelectorAll('.qopt').forEach((el,idx)=>{
+    el.disabled=true;
+    if(idx===q.ans)el.classList.add('correct');
+    else if(idx===i)el.classList.add('wrong');
+  });
+  const fb=document.getElementById('qfb');
+  if(i===q.ans){
+    score++;
+    fb.innerHTML='<strong>✓ Σωστό!</strong> '+q.fb;
+    fb.className='quiz-fb show ok';
+  } else {
+    fb.innerHTML='<strong>✗ Λάθος.</strong> Σωστό: <strong>'+q.opts[q.ans]+'</strong>. '+q.fb;
+    fb.className='quiz-fb show no';
+  }
+  document.getElementById('nxtBtn').className=`next-btn show ${sec}`;
+}
+function nextQ(){qIdx++;renderQ();}
+showInfo('physics');</script>
